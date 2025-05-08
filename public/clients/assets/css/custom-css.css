@@ -1,0 +1,147 @@
+.datetimepicker-custom {
+    padding: 0;
+}
+
+.datetimepicker-custom:focus {
+    border: none;
+}
+
+.main-header.header-one .main-menu .navbar-collapse .navigation .active {
+    background: var(--primary-color);
+}
+
+/* Dropdown-menu hidden by default */
+.dropdown-menu {
+    list-style-type: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: auto;
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li a {
+    margin: 0;
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.dropdown-menu li:hover {
+    background-color: var(--primary-color);
+}
+
+.menu-sidebar .dropdown-menu {
+    padding: 0;
+    box-shadow: 0 4px 8px rgba(122, 112, 112, 0.2);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #63AB45;
+    color: white;
+    text-decoration: underline;
+}
+
+.dropdown-menu li:not(:last-child) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-menu li.username {
+    color: #333;
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    ;
+}
+
+/* Hover hiệu ứng như các mục khác */
+.dropdown-menu li.username:hover {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: underline;
+}
+
+
+
+
+/* css tour in home */
+.block_tours {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/*  css tourdetail */
+.tour-gallery .gallery-between {
+    padding-bottom: 10px;
+    height: 100%;
+}
+
+.tour-gallery .gallery-item img {
+    height: 100%;
+    border-radius: 8px;
+}
+
+    /* ==========================================================================
+                                PAGE TOURS
+    ========================================================================== */
+
+/* css clear filter */
+.div-filter-clear {
+    justify-content: end;
+}
+
+.clear-filter {
+    color: #111111;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    padding: 2px 20px;
+    transition: color 0.3s ease;
+}
+
+.clear-filter:hover {
+    color: #fff;
+    background: #188d09;
+
+}
+
+
+.loader {
+    /* position: absolute;
+    left: 50%; */
+    margin: auto;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #63AB45;
+    border-bottom: 16px solid #63AB45;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    display: none;
+ }
+
+@-webkit-keyframes spin {
+    0% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+.hidden-content{
+    display: none; /* ẩn nội dung */
+}
