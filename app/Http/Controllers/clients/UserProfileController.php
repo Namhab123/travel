@@ -8,25 +8,14 @@ use Illuminate\Http\Request;
 
 class UserProfileController extends Controller
 {
-    private $user;
+    //private $user;
 
     public function __construct()
     {
+        parent::__construct();// Gọi constructor của Controller để khởi tạo $user
         $this->user = new User();
     }
 
-    protected function getUserId()
-    {
-        if (!session()->has('userId')) {
-            $username = session()->get('username');
-            if ($username) {
-                $userId = $this->user->getUserId($username);
-                session()->put('userId', $userId); //lưu userId vào session để dùng lại
-
-            }
-        }
-        return session()->get('userId');
-    }
     public function index()
     {
         $title = 'Thông tin cá nhân';
@@ -57,11 +46,13 @@ class UserProfileController extends Controller
         $update = $this->user->updateUser($userId, $dataUpdate);
         if (!$update) {
             return response()->json([
-                'fail' => false
+                'fail' => false,
+                'message' => 'Bạn chưa thay đổi thông tin nào. Vui lòng kiểm tra lại!'
             ]);
         }
         return response()->json([
             'success' => true,
+            'message' => 'Cập nhật thông tin thành công!',
         ]);
     }
 
@@ -76,7 +67,7 @@ class UserProfileController extends Controller
 
         // Kiểm tra mật khẩu cũ có đúng không
         if ($oldPass != $user->password) {
-            return response()->json(['success' => false, 'message' => 'Mật khẩu cũ không đúng!']);
+            return response()->json(['success' => false, 'message' => 'Mật khẩu cũ không đúng. Vui lòng kiểm tra lại!']);
         }
 
         // Kiểm tra mật khẩu mới có trùng mật khẩu cũ không
@@ -86,7 +77,7 @@ class UserProfileController extends Controller
 
         // Kiểm tra mật khẩu mới với confirm
         if ($newPass != $confirmPass) {
-            return response()->json(['success' => false, 'message' => 'Mật khẩu mới và xác nhận không khớp!']);
+            return response()->json(['success' => false, 'message' => 'Mật khẩu mới không khớp. Vui lòng kiểm tra lại!']);
         }
 
         // Nếu pass mới ok thì update

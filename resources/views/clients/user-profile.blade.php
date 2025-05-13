@@ -9,18 +9,17 @@
                     <div class="card-header">Ảnh đại diện</div>
                     <div class="card-body text-center">
                         <img id= "avatarPreview" class="img-account-profile rounded-circle mb-2"
-                            src="{{ asset('clients/assets/images/user_profile/' . ($user->avatar ?? 'default-avatar.jpg')) }}"
+                            src="{{ asset('clients/assets/images/user_profile/'.$user->avatar) }}"
                             alt="Ảnh đại diện">
                         <div class="small font-italic text-muted mb-4">JPG hoặc PNG không lớn hơn 5 MB</div>
-                        <input type="file" name="avatar" id="avatar" style="display: none" accept="image/*" >
+                        <input type="file" name="avatar" id="avatar" style="display: none" accept="image/*">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" class="__token">
-                        <input type="hidden" name="" value="{{ route('change-avatar') }}" class="label_avatar"> 
+                        <input type="hidden" name="" value="{{ route('change-avatar') }}" class="label_avatar">
                         <label for="avatar" class="btn btn-primary">Tải ảnh lên</label>
                     </div>
                 </div>
                 <div class="card mb-4 mb-xl-0">
-                    <button class="btn btn-primary"
-                    id="update_passwword_profile">Đổi mật khẩu</button>
+                    <button class="btn btn-primary" id="update_passwword_profile">Đổi mật khẩu</button>
                 </div>
 
             </div>
@@ -56,9 +55,9 @@
                                     <input class="form-control" id="inputPhone" type="number"
                                         placeholder="Số điện thoại" value="{{ $user->phoneNumber }}" required>
                                 </div>
-                                <div class="d-flex gap-2 mt-3" >
-                                    <button type="submit" class="btn btn-primary btn-save"
-                                        id="update_profile">Lưu thông tin</button>
+                                <div class="d-flex gap-2 mt-3">
+                                    <button type="submit" class="btn btn-primary btn-save" id="update_profile">Lưu
+                                        thông tin</button>
                                 </div>
                         </form>
                     </div>
@@ -68,29 +67,29 @@
             <div class="card mb-4">
                 <div class="card-body" id="card_change_password">
                     <div class="invalid-feedback" style="margin-top:-15px" id="validate_password"></div>
-                 <form action="{{ route('change-password') }}" method="post" class="change_password_profile">
-                    @csrf
-                    <div class="row gx-3">
-                        <div class="col-md-12">
-                            <label class="small mb-1" for="inpuOldPass">Mật khẩu hiện tại</label>
-                            <input class="form-control" id="inpuOldPass" type="text" placeholder="Nhập mật khẩu cũ"
-                                value="" required>
+                    <form action="{{ route('change-password') }}" method="post" class="change_password_profile">
+                        @csrf
+                        <div class="row gx-3">
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inpuOldPass">Mật khẩu hiện tại</label>
+                                <input class="form-control" id="inpuOldPass" type="text"
+                                    placeholder="Nhập mật khẩu cũ" value="" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputNewPass">Mật khẩu mới</label>
+                                <input class="form-control" id="inputNewPass" type="text"
+                                    placeholder="Nhập mật khẩu mới" value="" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputConfirmPass">Xác nhận mật khẩu</label>
+                                <input class="form-control" id="inputConfirmPass" type="text"
+                                    placeholder="Nhập lại mật khẩu mới" value="" required>
+                            </div>
+                            <div class="text-end mt-3">
+                                <button class="btn btn-primary btn-change" type="submit">Thay đổi</button>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <label class="small mb-1" for="inputNewPass">Mật khẩu mới</label>
-                            <input class="form-control" id="inputNewPass" type="text" placeholder="Nhập mật khẩu mới"
-                                value="" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="small mb-1" for="inputConfirmPass">Xác nhận mật khẩu</label>
-                            <input class="form-control" id="inputConfirmPass" type="text"
-                                placeholder="Nhập lại mật khẩu mới" value="" required>
-                        </div>
-                        <div class="text-end mt-3">
-                            <button class="btn btn-primary btn-change" type="submit">Thay đổi</button>
-                        </div>
-                       </div>
-                 </form>
+                    </form>
 
                 </div>
             </div>

@@ -28,7 +28,7 @@ class LoginGoogleController extends Controller
     {
         try {
 
-            $user = Socialite::driver('google')-> stateless()->user();
+            $user = Socialite::driver('google')->stateless()->user();
             
              $finduser = $this->user->checkUserExistGoogle($user->id); //Kieemr tra đã có id người dùng với email chưa
 /*              dd($finduser);

@@ -42,6 +42,8 @@
 <link rel="stylesheet" href="{{ asset('clients/assets/css/custom-css.css')}}">
 <!--User profile -->
 <link rel="stylesheet" href="{{ asset('clients/assets/css/user-profile.css')}}">
+<!-- Import css for toast  -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body>
@@ -109,18 +111,29 @@
                     </a>
                     <!-- menu sidbar -->
                     <div class="menu-sidebar">
-                        <li class="drop-down">
-                                <button class="dropdown-toggle bg-transparent" id="userDropdown">
-                                    <i class="fa-solid fa-user fa-flip fa-2xl"></i> 
-                                </button>
-                                <ul class="dropdown-menu" id="dropdownMenu"> 
-                                    @if(session()->has('username'))
-                                        <li class="username">{{ session()->get('username') }}</li>
-                                        <li><a href="{{ route('user-profile') }}">Thông tin cá nhân</a></li>
-                                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
-                                    @else
-                                    <li><a href="{{ route('login') }}">Đăng nhập</a></li>                                    @endif
-                                </ul>
+                        <li class="drop-down">  
+                            <button class="dropdown-toggle bg-transparent" id="userDropdown" style="color: #000000">
+                                @if (session()->has('avatar'))
+                                    @php
+                                        $avatar = session()->get('avatar', 'user_avatar.jpg');
+                                    @endphp
+                                    <img id="avatarPreview" class="img-account-profile rounded-circle mb-2"
+                                    src="{{ asset('clients/assets/images/user_profile/' .$avatar) }}" 
+                                    style="width: 36px; height: 36px;">
+                                @else
+                                <i class="fa-solid fa-user fa-flip fa-2xl" style="color: #000000;"></i>
+                                @endif
+                            </button>
+
+                            <ul class="dropdown-menu" id="dropdownMenu">
+                                @if (session()->has('username'))
+                                    <li><a href="{{ route('user-profile') }}">Thông tin cá nhân</a></li>
+                                    <li><a href="{{ route('my-tours') }}">Tour đã đặt</a></li>
+                                    <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                                @else
+                                    <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                                @endif
+                            </ul>
                         </li>
                     </div>
                 </div>

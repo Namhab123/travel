@@ -120,8 +120,13 @@
 <script src="{{ asset('clients/assets/js/script.js')}}"></script>
 <!-- datetime picker -->
 <script src="{{ asset('clients/assets/js/jquery.datetimepicker.full.min.js') }}"></script>
+<!-- jquery-toast-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<!-- paypal-payment -->
+<script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
 <!-- Custom script by m -->
 <script src="{{ asset('clients/assets/js/custom-js.js')}}"></script>
+
 
 </body>
 

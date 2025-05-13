@@ -35,7 +35,7 @@ class Login extends Model
     }
 
     //Cập nhật thông tin kích hoạt tài khoản 
-    public function activateAccount($token)
+    public function activateUserAccount($token)
     {
 
         return DB::table($this->table)
