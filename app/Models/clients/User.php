@@ -55,7 +55,7 @@ class User extends Model
             // Lấy danh sách hình ảnh thuộc về tour
             $tour->images = DB::table('tbl_images')
                 ->where('tourId', $tour->tourId)
-                ->pluck('imageUrl');
+                ->pluck('imageURL');
         }
 
         return $myTours;

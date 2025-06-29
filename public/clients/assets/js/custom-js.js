@@ -3,7 +3,8 @@
 /* ==========================================================================
                                 PAGE LOGIN
     ========================================================================== */
-
+/* $('.xdsoft_datetimepicker').remove();
+ */
 $(document).ready(function () {
     //handle click switch tab
     $("#sign-up").click(function () {
@@ -166,15 +167,34 @@ $(document).ready(function () {
         }
     })
 
-
+/* $('.xdsoft_datetimepicker').remove(); */
     /* ==========================================================================
                                 HOME  PAGE
     ========================================================================== */
     //Homepage
-    $("#start_date, #end_date").datetimepicker({
-        format: "d/m/Y", //định dang ngày(dd/mm/yyyy)
-        timepicker: false,//tắt chức năng chọn giờ
-    });
+/* $('#start_date, #end_date').datetimepicker({
+    format: 'd/m/Y',
+    timepicker: false,
+    yearStart: 2020,
+    yearEnd: 2030,
+    scrollInput: false,
+    onShow: function (ct, $input) {
+        // Tự động canh vị trí theo input đang được click
+        const offset = $input.offset();
+        const picker = $('.xdsoft_datetimepicker');
+        picker.css({
+            top: offset.top + $input.outerHeight(),
+            left: offset.left,
+            position: 'absolute',
+            zIndex: 99999
+        });
+    }
+});
+ */
+
+
+
+
 
     /* ==========================================================================
                                 HEADER
@@ -228,14 +248,20 @@ $(document).ready(function () {
 
         $.ajax({
             url: filterToursUrl,
-            method: "GET",
+            method: 'GET',
             data: formDataFilter,
+            dataType: 'json',
             success: function (res) {
-                $("#tours-container").html(res).removeClass("hidden-content");
-                $("#tours-container .destination-item").addClass("aos-animate");
+                $('#tours-container').html(res.tours).removeClass("hidden-content");
+                $('#tours-container .destination-item').addClass("aos-animate");
                 $(".loader").hide();
-            },
-        });
+        },
+        error: function () {
+            console.log("Lỗi khi lọc tours.");
+            $(".loader").hide();
+        }
+});
+
     }
 
     $(document).on("click", ".pagination-tours a", function (e) {
@@ -403,58 +429,75 @@ $(document).ready(function () {
     });
 
 
-    //Update avatar
-    $('#avatar').on('change', function(){
-        const file = event.target.files[0];
+ $('#avatar').on('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        // Validation file
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            toastr.error('Vui lòng chọn file ảnh (jpg, jpeg, png, gif)!');
+            $('#avatar').val(''); // Reset input
+            return;
+        }
+        if (file.size > maxSize) {
+            toastr.error('Kích thước file không được vượt quá 5MB!');
+            $('#avatar').val(''); // Reset input
+            return;
+        }
 
-        
-         if (file) {
-            // Hiển thị ảnh preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#avatarPreview').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(file);
-            var __token = $(this).closest(".card-body").find('input.__token').val();
-            var url =$(this).closest(".card-body").find('input.label_avatar').val();;
+        // Hiển thị ảnh preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#avatarPreview').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
 
-            // Tạo FormData để gửi qua AJAX
-            const formData = new FormData();
-            formData.append('avatar', file);
+        var __token = $(this).closest(".card-body").find('input.__token').val();
+        var url = $(this).closest(".card-body").find('input.label_avatar').val();
 
-            console.log(formData.get('avatar'));
-            
+        // Tạo FormData
+        const formData = new FormData();
+        formData.append('avatar', file);
 
-            // Gửi AJAX đến server
-             $.ajax({
-                url: url,           // Đường dẫn API
-                type: 'POST',                    // Phương thức POST
-                headers:{
-                    'X-CSRF-TOKEN': __token
-                },
-                data: formData,                  // Dữ liệu là file avatar
-                contentType: false,              // Không thiết lập kiểu dữ liệu (do dùng FormData)
-                processData: false,              // Không xử lý dữ liệu (để nguyên dạng FormData)
-                success: function(response) {
-                    if(response.success){
-                        toastr.success(response.message);
-                   } else{
-                        toastr.error(response.message);
-                   }
-                },
-                error: function(xhr, status, error){
-                    toastr.error('Có lỗi xảy ra. Vui lòng thử lại!');
+        console.log('File:', file.name, 'Size:', file.size);
+        console.log('URL:', url, 'Token:', __token);
 
-                }
-            }); 
-        } 
-        
-    });
-
+        // Gửi AJAX
+        $.ajax({
+            url: url,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': __token
+            },
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+            if (response.success) {
+                toastr.success(response.message);
+            if ($('#avatarPreviewHeader').length) {
+                $('#avatarPreviewHeader').attr('src', '/admin/assets/images/user-profile/' + response.avatar + '?t=' + new Date().getTime());
+            }
+            if ($('#avatarPreview').length) {
+                $('#avatarPreview').attr('src', '/admin/assets/images/user-profile/' + response.avatar + '?t=' + new Date().getTime());
+            }} else {
+                toastr.error(response.message);
+            }},
+            error: function(xhr, status, error) {
+                const errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'Có lỗi xảy ra. Vui lòng thử lại!';
+                toastr.error(errorMsg);
+                console.log('Error:', errorMsg, xhr.status); // Log chi tiết lỗi
+            }
+        });
+    }
+});
 
      /* ==========================================================================
                                 PAGE BOOKING
     ========================================================================== */
+
+
     let discount = 0; // Giảm giá, có thể cập nhật khi áp dụng mã giảm giá
     let totalPrice = 0; // Khai báo biến totalPrice để lưu tổng giá trị
 
@@ -490,6 +533,38 @@ $(document).ready(function () {
         $(".totalPrice").val(totalPrice);
     }
 
+    const quantityText = $(".quantityAvailable").text();
+const matchedQuantity = quantityText.match(/\d+/);
+const quantityAvailable = matchedQuantity ? parseInt(matchedQuantity[0]) : 0;
+
+// Hàm giới hạn số lượng người lớn và trẻ em khi người dùng nhập tay
+function validateInputLimit(input) {
+    const min = parseInt(input.attr("min"));
+    let value = parseInt(input.val()) || 0;
+
+    // Lấy lại số hiện tại
+    const otherInput =
+        input.attr("id") === "numAdults"
+            ? $("#numChildren")
+            : $("#numAdults");
+
+    const otherValue = parseInt(otherInput.val()) || 0;
+
+    // Giới hạn không vượt quá chỗ còn nhận
+    if (value + otherValue > quantityAvailable) {
+        value = quantityAvailable - otherValue;
+        toastr.warning("Tổng số người không được vượt quá số chỗ còn nhận!");
+    }
+
+    // Không được nhỏ hơn min
+    if (value < min) {
+        value = min;
+    }
+
+    input.val(value);
+
+    updateSummary();
+}
     // Sự kiện tăng/giảm số lượng người lớn và trẻ em
     $(".quantity-selector").on("click", ".quantity-btn", function () {
         const input = $(this).siblings("input");
@@ -537,6 +612,10 @@ $(document).ready(function () {
         // Cập nhật lại tổng giá
         updateSummary();
     });
+    // Sự kiện kiểm tra khi nhập tay
+$("#numAdults, #numChildren").on("input change", function () {
+    validateInputLimit($(this));
+});
 
     // Áp dụng mã giảm giá
     $(".btn-coupon").on("click", function (e) {
@@ -563,8 +642,7 @@ $(document).ready(function () {
         updateSummary();
     });
 
-
-     // Sự kiện khi thay đổi trạng thái checkbox
+    // Sự kiện khi thay đổi trạng thái checkbox
     $("#agree").on("change", function () {
         toggleButtonState();
     });
@@ -572,13 +650,17 @@ $(document).ready(function () {
     // Hàm thay đổi trạng thái của nút
     function toggleButtonState() {
         if ($("#agree").is(":checked")) {
-            $(".btn-submit-booking").removeClass("inactive").css("pointer-events", "auto");
+            $(".btn-submit-booking")
+                .removeClass("inactive")
+                .css("pointer-events", "auto");
         } else {
-            $(".btn-submit-booking").addClass("inactive").css("pointer-events", "none");
+            $(".btn-submit-booking")
+                .addClass("inactive")
+                .css("pointer-events", "none");
         }
     }
 
-     function validateBookingForm() {
+    function validateBookingForm() {
         let isValid = true;
 
         // Xóa thông báo lỗi cũ
@@ -587,17 +669,18 @@ $(document).ready(function () {
         // Kiểm tra họ và tên (không được để trống)
         const username = $("#username").val().trim();
         if (username === "") {
-            $("#usernameError").text("Họ và tên không được để trống!").show();
+            $("#usernameError").text("Họ và tên không được để trống").show();
             isValid = false;
         }
+
         // Kiểm tra email (phải đúng định dạng email)
         const email = $("#email").val().trim();
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
         if (email === "") {
-            $("#emailError").text("Email không được để trống!").show();
+            $("#emailError").text("Email không được để trống").show();
             isValid = false;
         } else if (!emailPattern.test(email)) {
-            $("#emailError").text("Email không đúng định dạng!").show();
+            $("#emailError").text("Email không đúng định dạng").show();
             isValid = false;
         }
 
@@ -605,35 +688,44 @@ $(document).ready(function () {
         const tel = $("#tel").val().trim();
         const telPattern = /^[0-9]{10,11}$/;
         if (tel === "") {
-            $("#telError").text("Số điện thoại không được để trống!").show();
+            $("#telError").text("Số điện thoại không được để trống").show();
             isValid = false;
         } else if (!telPattern.test(tel)) {
-            $("#telError").text("Số điện thoại phải có 10-11 chữ số!").show();
+            $("#telError").text("Số điện thoại phải có 10-11 chữ số").show();
             isValid = false;
         }
 
         // Kiểm tra địa chỉ (không được để trống)
         const address = $("#address").val().trim();
         if (address === "") {
-            $("#addressError").text("Địa chỉ không được để trống!").show();
+            $("#addressError").text("Địa chỉ không được để trống").show();
             isValid = false;
         }
+
         const paymentMethod = $("input[name='payment']:checked").val();
         if (!paymentMethod) {
-            toastr.error("Vui lòng chọn phương thức thanh toán!");
+            toastr.error("Vui lòng chọn phương thức thanh toán.");
             isValid = false;
         }
         return isValid; // Trả về kết quả kiểm tra
     }
     // Kiểm tra tính hợp lệ khi nhấn nút submit
     $(".btn-submit-booking").on("click", function (e) {
-        e.preventDefault();
+        const form = $(".booking-container")[0]; // lấy DOM form
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            form.reportValidity(); // Hiện thông báo HTML mặc định
+            return;
+    }
 
         // Nếu tất cả đều hợp lệ, gửi form
         if (validateBookingForm()) {
             $(".booking-container").submit();
-        }
-    }); 
+        }else {
+            e.preventDefault();
+    }
+    });
+
     // Hàm kiểm tra giá trị lựa chọn thanh toán
     $('input[name="payment"]').change(function () {
         const paymentMethod = $(this).val();
@@ -703,7 +795,8 @@ $(document).ready(function () {
             $("#btn-momo-payment").hide();
         }
     });
-     // Save form data to localStorage before payment
+
+    // Save form data to localStorage before payment
     $("#btn-momo-payment").click(function (e) {
         e.preventDefault();
         var urlMomo = $(this).data("urlmomo");
@@ -747,7 +840,8 @@ $(document).ready(function () {
             });
         }
     });
-     var savedData = localStorage.getItem("bookingData");
+
+    var savedData = localStorage.getItem("bookingData");
     if (savedData) {
         var bookingData = JSON.parse(savedData);
         console.log(bookingData);
@@ -770,11 +864,11 @@ $(document).ready(function () {
         // Clear booking data after populating the form
         localStorage.removeItem("bookingData");
     }
- 
     // Khởi tạo tổng giá khi trang vừa tải
     updateSummary();
     toggleButtonState();
 
+    
     /* ==========================================================================
                                 PAGE TOURDETAIL
     ========================================================================== */
@@ -886,6 +980,127 @@ $(document).ready(function () {
         });
     });
 
+ /****************************************
+     *             PAGE CONTACT             *
+     * ***************************************/
+
+
+    $('#contactForm').submit(function (event) {
+        event.preventDefault();
+
+        var name = $('#name').val();
+        var phoneNumber = $('#phone_number').val();
+        var message = $('#message').val();
+
+        $('.error').remove();
+
+       /*  if (sqlInjectionPattern.test(name)) {
+            $('#name').after('<span class="error" style="color: red;">Vui lòng nhập tên hợp lệ và không chứa ký tự đặc biệt.</span>');
+            return false;
+        }
+
+        if (sqlInjectionPattern.test(phoneNumber)) {
+            $('#phone_number').after('<span class="error" style="color: red;">Vui lòng nhập số điện thoại hợp lệ và không chứa ký tự đặc biệt.</span>');
+            return false;
+        } */
+
+
+        this.submit();
+    });
+
+
+/* ==========================================================================
+                        HANDLE SEARCH
+========================================================================== */
+    $('#search_form').on('submit', function(event) {
+        // Lấy giá trị các trường cần kiểm tra
+        var destination = $('#destination').val();
+        var startDate = $('#start_date').val();
+        var endDate = $('#end_date').val();
+
+        /* if (destination === "") {
+            event.preventDefault();
+            toastr.error('Vui lòng chọn điểm đến.');
+            return;
+        } */
+
+        // Chuyển đổi định dạng ngày từ DD/MM/YYYY sang YYYY-MM-DD
+        function convertDateFormat(date) {
+            var parts = date.split('/');
+            return parts[2] + '-' + parts[1] + '-' + parts[0];
+        }
+
+        if (startDate && endDate) {
+            var startDateFormatted = new Date(convertDateFormat(startDate));
+            var endDateFormatted = new Date(convertDateFormat(endDate));
+
+            // Kiểm tra nếu "start_date" lớn hơn "end_date"
+            if (startDateFormatted > endDateFormatted) {
+                event.preventDefault();
+                toastr.error('Ngày khởi hành không thể lớn hơn ngày kết thúc.');
+                return;
+            }
+        }
+    });
+
+/* ==========================================================================
+                        HANDLE SEARCH Speech Recognition
+========================================================================== */
+
+     // Kiểm tra nếu trình duyệt hỗ trợ Speech Recognition
+     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'vi-VN'; // Cài đặt ngôn ngữ nhận diện
+        recognition.continuous = true; // Tiếp tục nhận diện khi đang nói
+        recognition.interimResults = true; // Hiển thị kết quả tạm thời khi nhận diện
+    
+        // Biến để theo dõi trạng thái nhận diện
+        var isRecognizing = false;
+    
+        $('#voice-search').on('click', function() {
+            if (isRecognizing) {
+                recognition.stop(); // Dừng nhận diện nếu đang nhận diện
+                $(this).removeClass('fa-microphone-slash').addClass('fa-microphone'); // Đổi icon về micro
+            } else {
+                recognition.start(); // Bắt đầu nhận diện giọng nói
+                $(this).removeClass('fa-microphone').addClass('fa-microphone-slash'); // Đổi icon thành micro gạch
+            }
+        });
+    
+        recognition.onstart = function() {
+            console.log('Speech recognition started');
+            isRecognizing = true; // Đánh dấu trạng thái nhận diện
+            $('#voice-search').removeClass('fa-microphone').addClass('fa-microphone-slash'); // Đổi icon thành micro gạch
+        };
+    
+        recognition.onresult = function(event) {
+            var transcript = event.results[0][0].transcript; // Lấy kết quả nhận diện
+            if (event.results[0].isFinal) {
+                // Kết quả cuối cùng, điền vào ô tìm kiếm
+                $('input[name="keyword"]').val(transcript);
+            } else {
+                // Kết quả tạm thời, có thể cập nhật ô tìm kiếm
+                $('input[name="keyword"]').val(transcript);
+            }
+        };
+    
+        recognition.onerror = function(event) {
+            console.log('Speech recognition error', event.error);
+            toastr.error('Có lỗi xảy ra khi nhận diện giọng nói: ' + event.error);
+        };
+    
+        recognition.onend = function() {
+            console.log('Speech recognition ended');
+            $('#voice-search').removeClass('fa-microphone-slash').addClass('fa-microphone'); // Đổi icon về micro
+            isRecognizing = false; // Đánh dấu trạng thái nhận diện kết thúc
+        };
+    } else {
+        console.log('Speech recognition not supported in this browser.');
+        toastr.error('Trình duyệt của bạn không hỗ trợ nhận diện giọng nói.');
+    }
+
+
+    
 });
 
 

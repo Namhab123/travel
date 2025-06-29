@@ -75,4 +75,5 @@ class TourBookedController extends Controller
 
         return redirect()->route('home');
     }
+    
 }

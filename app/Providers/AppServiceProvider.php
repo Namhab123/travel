@@ -2,42 +2,42 @@
 
 namespace App\Providers;
 
+use App\Models\admin\ContactModel;
+use App\Models\admin\BookingModel;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Session;
-use App\Models\clients\User;
-use Illuminate\Support\Facades\DB;
-
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
+     *
+     * @return void
      */
-    public function register(): void
+    public function register()
     {
         //
     }
 
     /**
      * Bootstrap any application services.
+     *
+     * @return void
      */
     public function boot()
-{
-    /* View::composer('*', function ($view) {
-        if (Session::has('userId')) {
-            $user = User::where('userId', Session::get('userId'))->first();
-            $view->with('user', $user);
-        } else {
-            $view->with('user', null);
-        }
+    {
+        View::composer('admin.blocks.sidebar', function ($view) {
+            $contactModel = new ContactModel();
+            $unreadData = $contactModel->countContactsUnread();
+            $view->with('contactUnreadCount', $unreadData['countUnread']);
+            $view->with('unreadContacts', $unreadData['contacts']);
+        });
 
-        if (Session::has('userId')) {
-            $user = DB::table('tbl_users')->where('userId', Session::get('userId'))->first();
-            $view->with('user', $user);
-        } else {
-            $view->with('user', null);
-        }
-    }); */
-}
+        View::composer('admin.blocks.sidebar', function ($view) {
+            $bookingModel = new BookingModel();
+            $unreadData = $bookingModel->countBookingUnread();
+            $view->with('bookingUnreadCount', $unreadData['countUnread']);
+            $view->with('unreadBooking', $unreadData['booking']);
+        });
+    }
 }

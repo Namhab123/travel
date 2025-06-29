@@ -5,6 +5,7 @@ namespace App\Http\Controllers\clients;
 use App\Http\Controllers\Controller;
 use App\Models\clients\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserProfileController extends Controller
 {
@@ -21,6 +22,8 @@ class UserProfileController extends Controller
         $title = 'Thông tin cá nhân';
         $userId = $this->getUserId();
         $user = $this->user->getUser($userId);
+        session(['avatar' => $user->avatar ?: 'default_avatar.jpg']);
+     
         //dd($userId);
 
         return view('clients.user-profile', compact('title', 'user'));
@@ -94,38 +97,55 @@ class UserProfileController extends Controller
         return response()->json(['success' => true, 'message' => 'Đổi mật khẩu thành công!']);
     }
 
-    public function changeAvatar(Request $req){
-
+public function changeAvatar(Request $req)
+{
+    try {
+        // Validate request
         $req->validate([
-            'avatar' => 'required|image|mimes:jpeg,jpg,png,gif|max:5120'
+            'avatar' => 'required|image|mimes:jpeg,jpg,png,gif|max:5120' // 5MB
         ]);
-        //Lấy tệp ảnh
-        $avatar =$req->file('avatar');
 
-        //Tạo tên tệp mới cho ảnh
-        $filename = time(). '.' . $avatar->getClientOriginalExtension();//Tên tệp mới theo thời gian
+        // Lấy tệp ảnh
+        $avatar = $req->file('avatar');
+
+        // Tạo tên tệp mới theo thời gian
+        $filename = time() . '.' . $avatar->getClientOriginalExtension();
+
+        // Lấy user ID và thông tin user
         $userId = $this->getUserId();
-        $user =$this->user->getUser($userId);
-        if($user->avatar){
-            //Đường dẫn ảnh cũ
-            $oldAvatarPath = public_path('clients/assets/images/user_profile/'. $user ->avatar);
+        $user = $this->user->getUser($userId);
 
-            //Kiểm tra tệp cũ có tồn tại, xóa nếu có
-            if(file_exists($oldAvatarPath)){
+        // Xử lý ảnh cũ (nếu có)
+        if ($user->avatar) {
+            $oldAvatarPath = public_path('admin/assets/images/user-profile/' . $user->avatar);
+            if (file_exists($oldAvatarPath) && is_file($oldAvatarPath)) {
                 unlink($oldAvatarPath);
             }
         }
 
-        //Di chuyển ảnh vào thư mục public/clients/assets/images/user_profile/
-        $avatar->move(public_path('clients/assets/images/user_profile'), $filename);
-        $update = $this->user->updateUser($userId, ['avatar'=>$filename]);
-
-        if(!$update){
-            return response()->json(['fail'=> true, 'message' => 'Xảy ra lỗi. Không thể cập nhật ảnh!']);
+        // Đảm bảo thư mục tồn tại
+        $destinationPath = public_path('admin/assets/images/user-profile/');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
         }
-        return response()->json(['success'=> true, 'message' => 'Cập nhật ảnh thành công']);
 
+        // Di chuyển ảnh mới
+        $avatar->move($destinationPath, $filename);
 
-        return;
+        // Cập nhật session với ảnh mới
+        session(['avatar' => $filename]);
+
+        // Cập nhật thông tin user
+        $update = $this->user->updateUser($userId, ['avatar' => $filename]);
+        Log::info('Update avatar result: ' . ($update ? 'Success' : 'Failed') . ', UserID: ' . $userId . ', Filename: ' . $filename);
+        Log::info('Avatar saved at: ' . $destinationPath . $filename);
+        if (!$update) {
+            return response()->json(['fail' => true, 'message' => 'Xảy ra lỗi. Không thể cập nhật ảnh!']);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Cập nhật ảnh thành công', 'avatar' => $filename]);
+    } catch (\Exception $e) {
+        return response()->json(['fail' => true, 'message' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
     }
+}
 }

@@ -12,8 +12,12 @@
                             @foreach ($toursPopular as $tour)
                                 <div class="destination-item tour-grid style-three bgc-lighter">
                                     <div class="image">
-                                        <img src="{{ asset('clients/assets/images/gallery-tours/' . $tour->images[0]) }}"
-                                            alt="Tour">
+                                        <@if (!empty($tour->images) && isset($tour->images[0]))
+                                <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}"
+                                    alt="Tour">
+                            @else
+                                <img src="{{ asset('admin/assets/images/default.jpg') }}" alt="No image">
+                            @endif
                                     </div>
                                     <div class="content">
                                         <div class="destination-header">
@@ -25,7 +29,7 @@
                                             </div>
                                         </div>
                                         <h6><a
-                                                href="{{ route('tour-detail', ['id' => $tour->tourId]) }}">{{ $tour->title }}</a>
+                                                href="{{ route('tours_details', ['id' => $tour->tourId]) }}">{{ $tour->title }}</a>
                                         </h6>
                                     </div>
                                 </div>
@@ -44,14 +48,14 @@
                                 <span class="badge">Đợi xác nhận</span>
                             @elseif ($tour->bookingStatus == 'd')
                                 <span class="badge bgc-pink">Sắp khởi hành</span>
-                            @elseif ($tour->bookingStatus == 's')
-                                <span class="badge bgc-primary">Hoàn thành</span>
+                            @elseif ($tour->bookingStatus == 'f')
+                                <span class="badge bgc-primary" style="background-color: green">Hoàn thành</span>
                             @elseif ($tour->bookingStatus == 'c')
                                 <span class="badge" style="background-color: red">Đã hủy</span>
                             @endif
 
 
-                            <img src="{{ asset('clients/assets/images/gallery-tours/' . $tour->images[0] . '') }}"
+                            <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0] . '') }}"
                                 alt="Tour List">
                         </div>
                         <div class="content">
@@ -83,7 +87,7 @@
                             <div class="destination-footer">
                                 <span class="price"><span>{{ number_format($tour->totalPrice, 0) }}</span>/vnđ</span>
                                 @if ($tour->bookingStatus == 'f')
-                                    <a href="{{ route('tour-detail', ['id' => $tour->tourId]) }}"
+                                    <a href="{{ route('tours_details', ['id' => $tour->tourId]) }}"
                                         class="theme-btn style-two style-three">
                                         @if ($tour->rating)
                                             <span data-hover="Đã đánh giá">Đã đánh giá</span>

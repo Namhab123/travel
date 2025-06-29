@@ -3,4 +3,4 @@
 <button>
     <a href="{{ $link }}">Kích hoạt tài khoản</a>
 </button>
-<p>Trận trọng,<br>Nguyễn Bá Mạnh.</p>
+<p>Trận trọng,<br>Công ty du lịch Travel.</p>

@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-20" data-aos="fade-right" data-aos-delay="200"
                         data-aos-duration="1500" data-aos-offset="50">
-                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </nav>
@@ -23,34 +23,35 @@
         <div class="row gap-10 justify-content-center rel">
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item">
-                    <img src="{{ asset('clients/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
-                        alt="Destination">
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[0] . '') }}"
+                        alt="Destination" class="tour-image">
                 </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('clients/assets/images/gallery-tours/' . $tourDetail->images[1] . '') }}"
-                        alt="Destination">
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[1] . '') }}"
+                        alt="Destination" class="tour-image">
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item gallery-between">
-                    <img src="{{ asset('clients/assets/images/gallery-tours/' . $tourDetail->images[2] . '') }}"
-                        alt="Destination">
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[2] . '') }}"
+                        alt="Destination" class="tour-image">
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="gallery-item">
-                    <img src="{{ asset('clients/assets/images/gallery-tours/' . $tourDetail->images[3] . '') }}"
-                        alt="Destination">
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[3] . '') }}"
+                        alt="Destination" class="tour-image">
                 </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('clients/assets/images/gallery-tours/' . $tourDetail->images[4] . '') }}"
-                        alt="Destination">
+                    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tourDetail->images[4] . '') }}"
+                        alt="Destination" class="tour-image">
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Tour Gallery End -->
+
 
 
 <!-- Tour Header Area start -->
@@ -60,17 +61,20 @@
             <div class="col-xl-6 col-lg-7">
                 <div class="tour-header-content mb-15" data-aos="fade-left" data-aos-duration="1500"
                     data-aos-offset="50">
-                    <span class="location d-inline-block mb-10"><i
-                            class="fal fa-map-marker-alt"></i>{{ $tourDetail->destination }}</span>
+                    <span class="location d-inline-block mb-10"><i class="fal fa-map-marker-alt"></i>
+                        {{ $tourDetail->destination }}</span>
                     <div class="section-title pb-5">
                         <h2>{{ $tourDetail->title }}</h2>
                     </div>
                     <div class="ratting">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                        @for ($i = 0; $i < 5; $i++)
+                            @if ($avgStar && $i < $avgStar)
+                                <i class="fas fa-star"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
+                        @endfor
+
                     </div>
                 </div>
             </div>
@@ -89,15 +93,15 @@
 
 
 <!-- Tour Details Area start -->
-<section class="tour-details-page pb-100">
+<section class="tours_details-page pb-100">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="tour-details-content">
+                <div class="tours_details-content">
                     <h3>Khám phá Tour</h3>
                     <p>{!! $tourDetail->description !!}</p>
                     <div class="row pb-55">
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="tour-include-exclude mt-30">
                                 <h5>Bao gồm những dịch vụ</h5>
                                 <ul class="list-style-one check mt-25">
@@ -123,45 +127,9 @@
                                     <li><i class="far fa-times"></i> Bảo hiểm</li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
-                </div>
-
-                <h3>Hoạt động</h3>
-                <div class="tour-activities mt-30 mb-45">
-                    <div class="tour-activity-item">
-                        <i class="flaticon-hiking"></i>
-                        <b>Hiking</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-fishing"></i>
-                        <b>Fishing</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-man"></i>
-                        <b>Kayak shooting</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-kayak-1"></i>
-                        <b>Kayak</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-bonfire"></i>
-                        <b>Campfire</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-flashlight"></i>
-                        <b>Night Exploring</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-cycling"></i>
-                        <b>Biking</b>
-                    </div>
-                    <div class="tour-activity-item">
-                        <i class="flaticon-meditation"></i>
-                        <b>Yoga</b>
-                    </div>
-                </div>
+                </div> 
 
                 <h3>Lịch trình</h3>
                 <div class="accordion-two mt-25 mb-60" id="faq-accordion-two">
@@ -179,12 +147,15 @@
                             <div id="collapseTwo{{ $timeline->timeLineId }}" class="accordion-collapse collapse"
                                 data-bs-parent="#faq-accordion-two">
                                 <div class="accordion-body">
-                                    <p>{{ $timeline->description }}</p>
+                                    <p>{!! $timeline->description !!}</p>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+                <h3>Quy định</h3>
+                <p>{!! $tourDetail->regulatery !!}</p>
 
                 <div id="partials_reviews">
                     @include('clients.partials.reviews')
@@ -282,18 +253,131 @@
                         data-aos-offset="50">
                         <h5 class="widget-title">Cần trợ giúp?</h5>
                         <ul class="list-style-one">
-                            <li><i class="far fa-envelope"></i> <a
-                                    href="emilto:nguyenbamanh2503@gmail.com">nguyenbamanh2503@gmail.com</a></li>
+                            <li><i class="far fa-envelope"></i> <a href="emilto:manh8h@gmail.com">manh8h@gmail.com</a>
+                            </li>
                             <li><i class="far fa-phone-volume"></i> <a href="callto:+000(123)45688">+000 (123) 456
                                     88</a></li>
                         </ul>
                     </div>
+                    @if (!empty($tourRecommendations))
+                        <div class="widget widget-tour" data-aos="fade-up" data-aos-duration="1500"
+                            data-aos-offset="50">
+                            <h6 class="widget-title">Tours Tương Tự</h6>
+                            @foreach ($tourRecommendations as $tour)
+                                <div class="destination-item tour-grid style-three bgc-lighter">
+                                    <div class="image">
+                                        {{-- <span class="badge">10% Off</span> --}}
+@if (!empty($tour->images) && isset($tour->images[0]))
+    <img src="{{ asset('admin/assets/images/gallery-tours/' . $tour->images[0]) }}" alt="Destination">
+@else
+    <img src="{{ asset('admin/assets/images/gallery-tours/default.jpg') }}" alt="Default Image">
+@endif
+                                            alt="Tour" style="max-height: 137px">
+                                    </div>
+                                    <div class="content">
+                                        <div class="destination-header">
+                                            <span class="location"><i class="fal fa-map-marker-alt"></i>
+                                                {{ $tour->destination }}</span>
+                                            <div class="ratting">
+                                                <i class="fas fa-star"></i>
+                                                <span>({{ $tour->rating }})</span>
+                                            </div>
+                                        </div>
+                                        <h6><a
+                                                href="{{ route('tours_details', ['id' => $tour->tourId]) }}">{{ $tour->title }}</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 <!-- Tour Details Area end -->
+<!-- Lightbox Viewer -->
+<!-- Lightbox Viewer -->
+<div id="lightbox"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:9999;">
+    <!-- Nút đóng -->
+    <span
+        style="position:absolute; top:20px; right:30px; font-size:48px; font-weight: bold; color:white; cursor:pointer;"
+        onclick="closeLightbox()">×</span>
+
+    <!-- Nút mũi tên trái -->
+    <button id="prevBtn"
+        style="position:absolute; left:30px; font-size:60px; font-weight: bold; color:white; background:none; border:none; cursor:pointer; z-index:10000;">
+        ‹
+    </button>
+
+    <!-- Ảnh -->
+    <img id="lightbox-img" src="" style="max-width:90%; max-height:90%;" />
+
+    <!-- Nút mũi tên phải -->
+    <button id="nextBtn"
+        style="position:absolute; right:30px; font-size:60px; font-weight: bold; color:white; background:none; border:none; cursor:pointer; z-index:10000;">
+        ›
+    </button>
+</div>
+
+<script>
+    const images = Array.from(document.querySelectorAll('.tour-image'));
+    let currentIndex = 0;
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    images.forEach((img, index) => {
+        img.addEventListener('click', function() {
+            currentIndex = index;
+            showImage();
+        });
+    });
+
+    function showImage() {
+        lightboxImg.src = images[currentIndex].src;
+        lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+    }
+
+    function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage();
+    }
+
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage();
+    }
+
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    // Đóng khi click nền đen
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Hỗ trợ phím trái / phải / ESC
+    document.addEventListener('keydown', function(e) {
+        if (lightbox.style.display === 'flex') {
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'Escape') closeLightbox();
+        }
+    });
+</script>
+
 
 @include('clients.blocks.news_letter')
 @include('clients.blocks.footer')

@@ -1,13 +1,17 @@
-.datetimepicker-custom {
+/* .datetimepicker-custom {
     padding: 0;
 }
 
 .datetimepicker-custom:focus {
     border: none;
 }
-
+ */
 .main-header.header-one .main-menu .navbar-collapse .navigation .active {
     background: var(--primary-color);
+}
+
+.theme-btn .style-two .style-three i:hover{
+    background-color: #63AB45;
 }
 
 /* Dropdown-menu hidden by default */
@@ -82,8 +86,25 @@
     height: 100%;
 }
 
-/*  css tourdetail */
-.tour-gallery .gallery-between {
+/* Khung chung cho tất cả ảnh đại diện */
+.img-account-profile {
+    width: 160px; /* Kích thước cố định theo yêu cầu trước */
+    object-fit: cover; /* Giữ tỷ lệ và cắt ảnh nếu cần */
+    border-radius: 50%; /* Làm tròn ảnh nếu là rounded-circle */
+    border: 1px solid #ddd; /* Tùy chọn: viền để đẹp hơn */
+}
+
+/* Đảm bảo ảnh không vượt quá khung */
+.img-account-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+    /* ==========================================================================
+                                TOURDETAIL
+    ========================================================================== */
+/* .tour-gallery .gallery-between {
     padding-bottom: 10px;
     height: 100%;
 }
@@ -91,32 +112,98 @@
 .tour-gallery .gallery-item img {
     height: 100%;
     border-radius: 8px;
+} */
+
+/* Reset default margins and ensure container takes full width */
+.tour-gallery .container-fluid {
+    padding: 0;
 }
+
+/* Flexbox layout for the row to align items */
+.tour-gallery .row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px; /* Match the existing gap-10 class */
+    justify-content: center;
+    align-items: stretch; /* Ensure all columns stretch to the same height */
+}
+
+/* Ensure columns take equal width for the side columns */
+.tour-gallery .col-lg-4.col-md-6 {
+    flex: 0 0 300px; /* Fixed width for side columns (2 images per side) */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Match the existing gap between images */
+}
+
+/* Middle column (for the larger image) */
+.tour-gallery .col-lg-4.col-md-6:nth-child(2) {
+    flex: 0 0 620px; /* Width = 2 * side column width (300px) + 3 * gap (10px) */
+}
+
+/* Ensure images fit their containers */
+.tour-gallery .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure images scale properly */
+    border-radius: 8px; /* Optional: Add slight rounding for aesthetics */
+}
+
+/* Side images (2 on each side) */
+.tour-gallery .col-lg-4.col-md-6 .gallery-item {
+    height: 295px; /* Fixed height for side images */
+    flex: 1; /* Ensure side images take equal space */
+}
+
+/* Middle image */
+.tour-gallery .gallery-between {
+    height: 600px; /* Height = 2 * side image height (295px) + gap (10px) */
+    width: 100%;
+}
+
+/* Hover pointer + Zoom effect */
+.tour-gallery .gallery-item img {
+    cursor: pointer !important;
+    transition: transform 0.3s ease;
+}
+
+.tour-gallery .gallery-item img:hover {
+    transform: scale(1.05);
+}
+
 
     /* ==========================================================================
                                 PAGE TOURS
     ========================================================================== */
 
 /* css clear filter */
-.div-filter-clear {
+.div_filter_clear {
 
     justify-content: end;
 }
 
-.clear-filter {
+.clear_filter {
     color: #111111;
     background-color: var(--primary-color);
     border-radius: 8px;
     padding: 2px 20px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease; 
 }
 
-.clear-filter:hover {
-    color: #fff;
-    background: #188d09;
+/* .clear_filter:hover {
+    color: white;
+    background-color: var(--primary-color);
+    text-decoration: underline;
+    
+
+} */
+.clear_filter a:hover{
+    color: white;
+    background-color: var(--primary-color);
+    text-decoration: underline;
+    
 
 }
-
 
 .loader {
     /* position: absolute;
@@ -157,6 +244,13 @@
     flex-grow: 1;
     flex-direction: column;
 }
+.equal-content-fix h6 a:hover{
+    text-decoration: underline;
+}
+
+.theme-btn.style-three:hover,
+    a.theme-btn.style-three:hover {
+    background-color: var(--primary-color); }
 /* ==========================================================================
                                 PAGE BOOKING
     ========================================================================== */
@@ -304,7 +398,8 @@
             margin-bottom: 10px;
         }
 
-        .total-price, .quantity__Adults, .quantity__Children{
+        .total-price, .total-price-booked, .quantity__adults, .quantity__children, .quantity__adults-booked, .quantity__children-booked
+        {
             font-weight: bold;
             font-size: 1.2rem;
         }
@@ -369,7 +464,7 @@
             margin-top: 20px;
         }   
     }
-    /* .hide {
+     .hide {
     display: none !important;
     }
 
@@ -378,10 +473,280 @@
     }
     .ratting i.active {
     color: var(--secondary-color);
+    } 
+    
+    /* .period-picker button {
+        @apply bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600;
+    }
+    .period-picker button.active {
+        @apply bg-green-500;
     } */
+
 
 /* ==========================================================================
                                 PAGE DESTINATION
     ========================================================================== */
   
+.tour-title {
+    height: 40px;
+    line-height: 1.2;
+    overflow: hidden; /* Hide any text that overflows */
+    text-overflow: ellipsis; /* Display "..." if text overflows */
+    white-space: nowrap;
+}
+/* Container chính */
+.destination-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
 
+/* Mỗi card */
+.destination-card {
+    width: 100%;
+    margin-bottom: 30px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px); /* Nâng card lên khi hover */
+}
+
+/* Hình ảnh */
+.destination-item .image {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Chiều cao cố định */
+    overflow: hidden;
+    right: 10px;
+}
+
+.destination-item .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh không méo */
+    transition: transform 0.3s ease;
+}
+
+.destination-item .image:hover img {
+    transform: scale(1.1); /* Zoom khi hover */
+}
+
+/* Icon heart */
+.destination-item .heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 50%;
+    transition: color 0.3s ease;
+}
+
+.destination-item .heart:hover {
+    color: #ff4d4f; /* Đổi màu heart khi hover */
+}
+
+/* Nội dung */
+.destination-item .content {
+    padding: 15px;
+    text-align: left;
+}
+
+.destination-item .tour-title {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.destination-item .tour-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.destination-item .tour-title a:hover {
+    text-decoration: underline;
+}
+
+/* Meta info (thời gian và duration) */
+.destination-item .meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.destination-item .time,
+.destination-item .duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.destination-item .time i {
+    color: #e67e22; /* Màu icon đồng hồ */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .destination-card {
+        margin-bottom: 20px;
+    }
+
+    .destination-item .image {
+        height: 200px;
+    }
+
+    .destination-item .tour-title {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .destination-container {
+        padding: 15px;
+    }
+
+    .destination-item .image {
+        height: 150px;
+    }
+
+    .destination-item .tour-title {
+        font-size: 14px;
+    }
+
+    .destination-item .meta-info {
+        font-size: 12px;
+    }
+}
+
+
+
+/* ==========================================================================
+                                PAGE TOURGUIDE
+    ========================================================================== */
+
+/* Định dạng skillbar */
+.skillbar {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.skillbar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.skillbar-bar {
+    width: 0; /* Bắt đầu từ 0% */
+    height: 10px; /* Chiều cao thanh */
+    background: #007bff; /* Màu thanh */
+    border-radius: 5px;
+    animation: fillSkillBar 4s ease-in-out forwards; /* Animation chạy trong 2 giây */
+}
+
+/* Keyframes cho hiệu ứng chạy dần */
+@keyframes fillSkillBar {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 93%; /* Kết thúc ở 93% (phù hợp với data-percent="93") */
+    }
+}
+
+/* Định dạng phần trăm */
+.skill-bar-percent {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+}
+
+/* Đảm bảo các thành phần khác không bị ảnh hưởng */
+.benefit-area {
+    padding: 50px 0;
+}
+
+.benefit-area .section-title h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.benefit-area p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .skillbar-bar {
+        height: 8px;
+    }
+
+    .skillbar-title {
+        font-size: 14px;
+    }
+
+    .skill-bar-percent {
+        font-size: 12px;
+        top: -25px;
+    }
+
+/* ==========================================================================
+                            HANDLE SEARCH
+========================================================================== */
+    #search_form .list {
+        width: 100%;
+        height: 250px;
+        overflow-y: auto;
+    }
+
+
+.team-item {
+  width: 300px !important;
+  height: 360px !important;
+  object-fit: cover !important;
+}
+}
+
+/* .xdsoft_datetimepicker {
+    z-index: 99999 !important;
+    max-width: 350px;
+    overflow: visible;
+    position: absolute !important;
+    display: none;
+}
+
+.xdsoft_datetimepicker.active {
+    display: block !important;
+}
+.xdsoft_datetimepicker.xdsoft_show {
+    display: block !important;
+}
+
+/* Ngăn bị che hoặc tràn layout nếu cha có overflow */
+/* body, html {
+    overflow: visible !important;
+} */
+/* .hero-area.rel {
+    position: static !important;
+    overflow: visible !important;
+    z-index: auto !important;
+} */
+ 

@@ -39,4 +39,13 @@ return [
 
     ],
 
+    'facebook' => [
+
+        'client_id' => env('FACEBOOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOOK_REDIRECT'),
+
+    ],
+
+
 ];

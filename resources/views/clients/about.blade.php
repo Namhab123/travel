@@ -31,7 +31,7 @@
                             <li>Giá cả hợp lí</li>
                             <li>Hỗ trợ trực tuyến 24/7</li>
                         </ul>
-                        <a href="about.html" class="theme-btn style-three mt-30">
+                        <a href="{{ route('tours') }}" class="theme-btn style-three mt-30">
                             <span data-hover="Khám phá">Khám phá</span>
                             <i class="fal fa-arrow-right"></i>
                         </a>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="route{{('tours')}}" class="theme-btn mt-10 style-two">
+                <a href="{{ route('tours') }}" class="theme-btn mt-10 style-two">
                     <span data-hover="Khám phá">Khám phá</span>
                     <i class="fal fa-arrow-right"></i>
                 </a>
@@ -264,7 +264,7 @@
 <div class="container">
     <div class="video-wrap" data-aos="zoom-in" data-aos-duration="1500" data-aos-offset="50">
         <img src="{{  asset('clients/assets/images/video/video-bg.jpg')}}" alt="Video">
-        <a href="https://www.youtube.com/watch?v=9Y7ma241N8k" class="mfp-iframe video-play" tabindex="-1"><i class="fas fa-play"></i></a>
+        <a href="https://www.youtube.com/watch?v=jhln5b4wOfI" class="mfp-iframe video-play" tabindex="-1"><i class="fas fa-play"></i></a>
     </div>
 </div>
 <div class="for-bg bgc-black">

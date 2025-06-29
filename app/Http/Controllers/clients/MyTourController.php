@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\clients\Tours;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use PgSql\Lob;
 
 class MyTourController extends Controller
 {
@@ -41,7 +43,7 @@ class MyTourController extends Controller
             } catch (\Exception $e) {
                 // Xử lý lỗi khi gọi API
                 $tourIds = [];
-                \Log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
+                Log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
             }
 
 
@@ -50,6 +52,7 @@ class MyTourController extends Controller
         }else {
             $toursPopular = $this->tours->toursPopular(6);
         }
+        
 
         return view('clients.my-tours', compact('title', 'myTours','toursPopular'));
     }

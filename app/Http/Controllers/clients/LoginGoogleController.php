@@ -7,60 +7,73 @@ use App\Models\clients\Login;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 
 class LoginGoogleController extends Controller
 {
 
-    private $user;
+    protected $user;
 
     public function __construct()
     {
-        $this-> user = new Login();
+        $this->user = new Login();
     }
-    public function redirectToGoogle()
 
+    public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    public function handleGoogleCallback()
-    {
-        try {
+public function handleGoogleCallback()
+{
+    try {
+        $user = Socialite::driver('google')->stateless()->user();
+        $finduser = $this->user->checkUserExistGoogle($user->id);
 
-            $user = Socialite::driver('google')->stateless()->user();
-            
-             $finduser = $this->user->checkUserExistGoogle($user->id); //Kieemr tra đã có id người dùng với email chưa
-/*              dd($finduser);
- */            if ($finduser) {
-                    session()->put('username', $finduser->username);
+        if ($finduser) {
+            // Kiểm tra trạng thái kích hoạt (nếu đã áp dụng yêu cầu xác nhận email)
+            if ($finduser->isActive !== 'y') {
+                return redirect('/login')->with('error', 'Tài khoản chưa được kích hoạt. Vui lòng kiểm tra email!');
+            }
+
+            // Lưu session
+            session()->put('username', $finduser->username);
+            session()->put('avatar', $finduser->avatar ?? null);
+            session()->put('userId', $finduser->userId);
+
+            // Thêm thông báo thành công vào session
+            toastr()->success('Đăng nhập thành công!', 'Thông báo');
+
+            return redirect()->intended('/');
+        } else {
+            // Tạo tài khoản mới (nếu không áp dụng xác nhận email)
+            $activation_token = \Illuminate\Support\Str::random(60);
+            $data_google = [
+                'google_id' => $user->id,
+                'fullName' => $user->name,
+                'username' => 'user-google' . time(),
+                'password' => bcrypt('12345678'),
+                'email' => $user->email,
+                'activation_token' => $activation_token,
+                'isActive' => 'y' // Tạm thời kích hoạt ngay nếu không dùng xác nhận email
+            ];
+
+            $newUser = $this->user->registerAccount($data_google);
+
+            if ($newUser && isset($newUser->username)) {
+                session()->put('username', $newUser->username);
+                toastr()->success('Đăng nhập thành công! Tài khoản mới đã được tạo.', 'Thông báo');
                 return redirect()->intended('/');
             } else {
-
-                $data_google = [
-                    'google_id' => $user->id,
-                    'fullName'=>$user->name,
-                    'username'=>'user-google',
-                    'password'=>md5('12345678'),
-                    'email'=>$user->email,
-                    'isActive'=>'y'
-                ];
-                $newUser = $this->user->registerAccount($data_google);
-                //Kiểm tra xem newUser có hợp lệ không
-                if($newUser && isset ($newUser->username)){
-                    //Luu thông tin người dùng mới vào session
-                    session()->put('username',$newUser->username);
-                    return redirect()->intended('/');
-                }else{
-                    //Nếu có lỗi khi đăng ký người dùng mới, xử lý lỗi
-                    return redirect()->back()->with('error', 'Có lỗi xẩy ra trong quá trình đăng ký người dùng mới');
-                }
+                return redirect('/login')->with('error', 'Có lỗi xảy ra trong quá trình đăng ký!');
             }
-        } catch (Exception $e) {
-
-            dd($e->getMessage());
         }
+    } catch (\Exception $e) {
+        Log::error('Google login error: ' . $e->getMessage());
+        return redirect('/login')->with('error', 'Có lỗi xảy ra khi đăng nhập bằng Google!');
     }
-
-    
+}
 }

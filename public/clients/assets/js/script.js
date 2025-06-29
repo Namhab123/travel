@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------------------------
-    Template Name: Ravelo - Travel & Tour Booking HTML Template
-    Template URI: https://webtend.net/demo/html/ravelo/
+    Template Name: Travel - Travel & Tour Booking HTML Template
+    Template URI: https://webtend.net/demo/html/Travel/
     Author: WebTend
     Author URI:  https://webtend.net/
     Version: 1.0

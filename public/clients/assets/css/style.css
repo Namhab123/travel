@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*----------------------------------------------------------------------
-    Template Name: Ravelo - Travel & Tour Booking HTML Template
-    Template URI: https://webtend.net/demo/html/ravelo/
+    Template Name: Travel - Travel & Tour Booking HTML Template
+    Template URI: https://webtend.net/demo/html/Travel/
     Author: WebTend
     Author URI:  https://webtend.net/
     Version: 1.0
@@ -4502,7 +4502,7 @@ h6, .h6, blockquote {
       width: 40px;
       height: 40px;
       background: white;
-      line-height: 40px;
+      line-height: 35px;
       border-radius: 50%;
       text-align: center;
       color: var(--secondary-color); }
@@ -4567,7 +4567,7 @@ h6, .h6, blockquote {
         width: 30px;
         height: 30px;
         font-size: 13px;
-        line-height: 30px; }
+        line-height: 23px; }
       .destination-item.style-two .image .location {
         position: absolute;
         right: 10px;
@@ -4750,6 +4750,7 @@ h6, .h6, blockquote {
     .destination-item.style-three.tour-grid {
       display: block; }
       .destination-item.style-three.tour-grid .image {
+        left: 1px;
         max-width: none; }
       .destination-item.style-three.tour-grid .content {
         padding: 20px 30px 30px; }
@@ -5931,7 +5932,9 @@ h6, .h6, blockquote {
 .team-item {
   margin-bottom: 30px; }
   .team-item img {
-    width: 100%;
+    width: 300px; /* Chiều rộng cố định */
+    height: 360px; /* Chiều cao cố định */
+    object-fit: cover;
     border-radius: 10px; }
   .team-item .content {
     position: absolute;

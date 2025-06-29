@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class ToursController extends Controller
 {
-
     private $tours;
-
 
     public function __construct()
     {
@@ -35,15 +33,14 @@ class ToursController extends Controller
                 'tours' => view('clients.partials.filter-tours', compact('tours'))->render(),
             ]);
         }
-        $toursPopular = $this->tours->toursPopular(2);
+        $toursPopular = $this->tours->toursPopular(9); // Giới hạn 9 tour phổ biến
 
-        return view('clients.tours', compact('title', 'tours', 'domainsCount','toursPopular'));
+        return view('clients.tours', compact('title', 'tours', 'domainsCount', 'toursPopular'));
     }
 
     //Xử lý filter tours
     public function filterTours(Request $req)
     {
-
         $conditions = [];
         $sorting = [];
 
@@ -94,22 +91,21 @@ class ToursController extends Controller
             }
         }
 
-        // dd($conditions);
         $tours = $this->tours->filterTours($conditions, $sorting);
 
         // If not paginated, simulate pagination
         if (!$tours instanceof \Illuminate\Pagination\LengthAwarePaginator) {
-            // Create a fake paginator (pagination for non-paginated collection)
             $tours = new \Illuminate\Pagination\LengthAwarePaginator(
-                $tours, // Collection
-                count($tours), // Total items
-                9, // Per page
-                1, // Current page
-                ['path' => url()->current()] // Path for pagination
+                $tours,
+                count($tours),
+                9,
+                1,
+                ['path' => url()->current()]
             );
         }
 
-        return view('clients.partials.filter-tours', compact('tours'));
-
+        return response()->json([
+            'tours' => view('clients.partials.filter-tours', compact('tours'))->render()
+        ]);
     }
 }

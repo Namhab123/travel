@@ -8,9 +8,10 @@
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Ảnh đại diện</div>
                     <div class="card-body text-center">
-                        <img id= "avatarPreview" class="img-account-profile rounded-circle mb-2"
-                            src="{{ asset('clients/assets/images/user_profile/'.$user->avatar) }}"
-                            alt="Ảnh đại diện">
+                        <img id="avatarPreview" class="img-account-profile rounded-circle mb-2"
+                            src="{{ asset('admin/assets/images/user-profile/' . ($user->avatar ?: 'default_avatar.jpg')) }}"
+                            alt="Ảnh đại diện"
+                            onerror="this.src='{{ asset('admin/assets/images/user-profile/default_avatar.jpg') }}';">
                         <div class="small font-italic text-muted mb-4">JPG hoặc PNG không lớn hơn 5 MB</div>
                         <input type="file" name="avatar" id="avatar" style="display: none" accept="image/*">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" class="__token">

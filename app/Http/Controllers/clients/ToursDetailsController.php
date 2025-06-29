@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\clients\Tours;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ToursDetailsController extends Controller
 {
@@ -51,7 +52,7 @@ class ToursDetailsController extends Controller
         } catch (\Exception $e) {
             // Xử lý lỗi khi gọi API
             $relatedTours = [];
-            \Log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
+            log::error('Lỗi khi gọi API liên quan: ' . $e->getMessage());
         }
 
         $id_toursRe = $relatedTours;

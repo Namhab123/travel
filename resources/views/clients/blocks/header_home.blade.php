@@ -36,8 +36,11 @@
     <link rel="stylesheet" href="{{ asset('clients/assets/css/slick.min.css') }}">
     <!-- Main Style -->
     <link rel="stylesheet" href="{{ asset('clients/assets/css/style.css') }}">
-    <!-- datetime picker -->
-    <link rel="stylesheet" href="{{ asset('clients/assets/css/jquery.datetimepicker.min.css') }}">
+    <!-- Font Icon -->
+    <link rel="stylesheet"
+        href="{{ asset('clients/assets/css/css-login/fonts/material-icon/css/material-design-iconic-font.min.css') }}">
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ asset('clients/assets/css/css-login/style.css') }}">
     <!-- custom css by m -->
     <link rel="stylesheet" href="{{ asset('clients/assets/css/custom-css.css') }}">
     <!--User profile -->
@@ -51,8 +54,8 @@
     <div class="page-wrapper">
 
         {{-- <!-- Preloader -->
-  <div class="preloader"><div class="custom-loader"></div></div>
- --}}
+<div class="preloader"><div class="custom-loader"></div></div> --}}
+
         <!-- main header -->
         <header class="main-header header-one white-menu menu-absolute">
             <!--Header-Upper-->
@@ -62,7 +65,7 @@
                     <div class="header-inner rel d-flex align-items-center">
                         <div class="logo-outer">
                             <div class="logo"><a href="{{ route('home') }}"><img
-                                        src="{{ asset('clients/assets/images/logos/logo.png') }}" alt="Logo"
+                                        src="{{ asset('clients/assets/images/logos/logo9.png') }}" alt="Logo"
                                         title="Logo"></a></div>
                         </div>
 
@@ -72,7 +75,7 @@
                                 <div class="navbar-header">
                                     <div class="mobile-logo">
                                         <a href="{{ route('home') }}">
-                                            <img src="{{ asset('clients/assets/images/logos/logo.png') }}"
+                                            <img src="{{ asset('clients/assets/images/logos/logo10.png') }}"
                                                 alt="Logo" title="Logo">
                                         </a>
                                     </div>
@@ -105,50 +108,59 @@
                                                 href="{{ route('destination') }}">Điểm đến</a></li>
                                         <li class="{{ Request::url() == route('contact') ? 'active' : '' }}"><a
                                                 href="{{ route('contact') }}">Liên hệ</a></li>
-                                        <li class="{{ Request::url() == route('blogs') ? 'active' : '' }}"><a
-                                                href="{{ route('blogs') }}">Blog</a></li>
                                     </ul>
                                 </div>
 
                             </nav>
                             <!-- Main Menu End-->
                         </div>
-
                         <!-- Nav Search -->
                         <div class="nav-search">
                             <button class="far fa-search"></button>
-                            <form action="#" class="hide">
-                                <input type="text" placeholder="Search" class="searchbox" required="">
+                            <form action="{{ route('search-voice-text') }}" class="hide" method="GET">
+                                <input type="text" name="keyword" placeholder="Search" class="searchbox" required>
+                                <i class="fa fa-microphone" aria-hidden="true" style="margin: 0 16px"
+                                    id="voice-search"></i>
                                 <button type="submit" class="searchbutton far fa-search"></button>
                             </form>
-                        </div> 
+                        </div>
 
                         <!-- Menu Button -->
-                        <div class="menu-sidebar">
-                            <li class="drop-down">  
-                                <button class="dropdown-toggle bg-transparent" id="userDropdown" style="color: #f3f3f7">
-                                    @if (session()->has('avatar'))
-                                        @php
-                                            $avatar = session()->get('avatar', 'user_avatar.jpg');
-                                        @endphp
-                                        <img id="avatarPreview" class="img-account-profile rounded-circle mb-2"
-                                        src="{{ asset('clients/assets/images/user_profile/' .$avatar) }}" 
-                                        style="width: 36px; height: 36px;">
-                                    @else
-                                    <i class="fa-solid fa-user fa-flip fa-2xl" style="color: #f1f1f1;"></i>
-                                    @endif
-                                </button>
-    
-                                <ul class="dropdown-menu" id="dropdownMenu">
-                                    @if (session()->has('username'))
-                                        <li><a href="{{ route('user-profile') }}">Thông tin cá nhân</a></li>
-                                        <li><a href="{{ route('my-tours') }}">Tour đã đặt</a></li>
-                                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
-                                    @else
-                                        <li><a href="{{ route('login') }}">Đăng nhập</a></li>
-                                    @endif
-                                </ul>
-                            </li>
+                        <div class="menu-btns py-10">
+                            <a href="{{ route('tours') }}" class="theme-btn style-two bgc-secondary">
+                                <span data-hover="Đặt ngay">Đặt ngay</span>
+                                <i class="fal fa-arrow-right"></i>
+                            </a>
+                            <!-- menu sidbar -->
+                            <div class="menu-sidebar">
+                                <li class="drop-down">
+                                    <button class="dropdown-toggle bg-transparent" id="userDropdown"
+                                        style="color: #ffffff">
+                                        @if (session()->has('avatar'))
+                                            @php
+                                                $avatar = session()->get('avatar', 'user_avatar.jpg');
+                                            @endphp
+                                            <img id="avatarPreviewHeader"
+                                                class="img-account-profile rounded-circle mb-2"
+                                                src="{{ asset('admin/assets/images/user-profile/' . $avatar) }}"
+                                                alt="Ảnh đại diện" style="width: 36px; height: 36px;"
+                                                onerror="this.src='{{ asset('admin/assets/images/user-profile/user_avatar.jpg') }}';">
+                                        @else
+                                            <i class="fa-solid fa-user fa-flip fa-2xl" style="color: #fafafa;"></i>
+                                        @endif
+                                    </button>
+
+                                    <ul class="dropdown-menu" id="dropdownMenu">
+                                        @if (session()->has('username'))
+                                            <li><a href="{{ route('user-profile') }}">Thông tin cá nhân</a></li>
+                                            <li><a href="{{ route('my-tours') }}">Tour đã đặt</a></li>
+                                            <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                                        @else
+                                            <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            </div>
                         </div>
                     </div>
                 </div>

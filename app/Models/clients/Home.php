@@ -12,24 +12,21 @@ class Home extends Model
 
     protected $table = 'tbl_tours';
 
-    public function getHomeTours(){
-        //lấy thông tin tours
-        $tours = DB::table($this->table)
-            ->get();
+    public function getHomeTours($limit = null)
+    {
+        // Lấy thông tin tours
+        $tours = DB::table($this->table)->where('availability', 1)->orderBy('tourId', 'desc');
+        if ($limit) {
+            $tours = $tours->take($limit);
+        }
+        $tours = $tours->get();
 
-        foreach ($tours as $tour){
-            //lấy danh sách hình ảnh thuộc về tours
+        foreach ($tours as $tour) {
+            // Lấy danh sách hình ảnh thuộc về tours
             $tour->images = DB::table('tbl_images')
-            ->where('tourId', $tour->tourId)
-            ->pluck('imageURL');
-
-            //lấy danh sách timeline thuộc về tours
-/*             $tours->timeline = DB::table('tbl_timeline')
-            ->where('tourdId', $tours->tourId)
-            ->pluck('title');
-
-    */     }
-    
+                ->where('tourId', $tour->tourId)
+                ->pluck('imageURL');
+        }
 
         return $tours;
     }

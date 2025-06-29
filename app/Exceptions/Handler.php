@@ -53,9 +53,10 @@ class Handler extends ExceptionHandler
             if($exception->getStatusCode() == 404) {
                 //Kiem tra URL cos chua /admin hay khong de quyet dinh hien thi trang loi cho admin
                 if($request->is('admin/*')){
-                    return response()-> view('admin.errors.404', [], 404);
+                    return response()-> view('admin.errors.404', ['title' => '404 - Không tìm thấy trang'], 404);
                 } else {
-                    return response()-> view('clients.errors.404', [], 404);
+                    $title = '404';
+                    return response()-> view('clients.errors.404',  ['title' => $title], 404);
                 }
             }
         }

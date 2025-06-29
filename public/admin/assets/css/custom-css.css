@@ -1,0 +1,180 @@
+.hide {
+    display: none;
+}
+
+
+/* ==========================================================================
+                            TOURS MANAGEMENT
+========================================================================== */
+
+/* hide button previous  */
+
+#wizard .actionBar .buttonPrevious {
+    display: none;
+}
+
+#wizard .stepContainer {
+    height: 80% !important;
+}
+
+/* ==========================================================================
+                            ADD TOURS
+========================================================================== */
+.timeline-entry {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* ==========================================================================
+                            TOURS MANAGEMENT
+========================================================================== */
+
+.btn-action-listTours {
+    border: none;
+    background: none;
+}
+
+#edit-tour-modal .modal-dialog {
+    min-width: 60%;
+}
+
+#datatable-listTours td:nth-child(3), /* Mô tả */
+#datatable-listTours td:nth-child(9) { /* Quy định */
+    max-height: 150px;
+    overflow: auto;
+    display: block; /* Đảm bảo nội dung hiển thị đúng */
+}
+#datatable-listTours th:nth-child(3),
+#datatable-listTours th:nth-child(9) {
+    max-height: 50px; /* Giới hạn chiều cao tiêu đề nếu cần */
+}
+
+/* ==========================================================================
+                            BOOKING MANAGEMENT
+========================================================================== */
+
+.icon_payment{
+    width: 55px;
+    height: 55px;
+}
+.invoice_payment-method{
+    width: 100px;
+}
+
+
+
+/* ==========================================================================
+                            CONTACT MANAGEMENT 
+========================================================================== */
+
+.text-contact-truncate{
+    display: -webkit-box; /* Sử dụng flexbox để giới hạn hiển thị */
+    -webkit-line-clamp: 3; /* Giới hạn số dòng hiển thị là 3 */
+    -webkit-box-orient: vertical;
+    overflow: hidden; /* Ẩn nội dung vượt quá */
+    text-overflow: ellipsis; /* Thêm dấu '...' cho nội dung bị cắt */
+    word-break: break-word; /* Đảm bảo từ không bị tràn dòng */
+}
+.mail_view{
+    display: none;
+}
+
+/* ==========================================================================
+                            LOGIN ADMIN
+========================================================================== */
+.submit {
+    background-color: #28a745; /* Màu xanh lá (giống btn-success của Bootstrap) */
+    color: #fff; /* Màu chữ trắng */
+    padding: 10px 20px; /* Khoảng cách bên trong */
+    border: none; /* Bỏ viền mặc định */
+    border-radius: 5px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm chữ */
+    transition: all 0.3s ease; /* Hiệu ứng mượt mà */
+    cursor: pointer; /* Con trỏ tay khi hover */
+}
+
+.submit:hover {
+    background-color: #218838; /* Màu xanh đậm hơn khi hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+    transform: translateY(-2px); /* Nâng nút lên khi hover */
+}
+
+.submit:active {
+    transform: translateY(0); /* Trở lại vị trí ban đầu khi click */
+    box-shadow: none; /* Bỏ bóng khi click */
+}
+
+.submit:focus {
+    outline: none; /* Bỏ viền focus mặc định */
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3); /* Hiệu ứng focus */
+}
+
+#lineChart {
+    width: 100% !important;
+    height: 500px !important;
+}
+
+/* ==========================================================================
+                            USER MANAGEMENT
+========================================================================== */
+
+/* Container cho ảnh avatar */
+.avatar-container {
+    width: 100px; /* Kích thước cố định, bạn có thể thay đổi (ví dụ: 50px, 36px) */
+    height: 100px; /* Cùng kích thước với width để giữ tỷ lệ 1:1 */
+    overflow: hidden; /* Ẩn phần thừa */
+    border-radius: 50%; /* Làm tròn ảnh */
+    background-color: #f5f5f5; /* Nền cho khoảng trống nếu ảnh không lấp đầy */
+    display: inline-block; /* Đảm bảo căn chỉnh */
+}
+
+/* Styling cho ảnh bên trong */
+.avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giữ tỷ lệ và cắt ảnh nếu cần */
+    border-radius: 50%; /* Đảm bảo ảnh cũng tròn */
+}
+
+/* Loại bỏ class img-fluid nếu không cần, vì nó có thể gây xung đột */
+.img-circle {
+    border-radius: 50%; /* Đảm bảo class img-circle hoạt động */
+}
+
+/* Đảm bảo các cột profile_details bằng nhau */
+.profile_details {
+    display: flex; /* Sử dụng Flexbox */
+    flex-direction: column; /* Cột thẳng đứng */
+    height: 100%; /* Đảm bảo chiều cao tối đa */
+}
+
+
+
+
+
+/* Áp dụng cho nội dung hiển thị trong bảng datatable-listTours */
+#datatable-listTours td ul,
+#datatable-listTours td ol {
+    padding-left: 20px;
+    margin: 0;
+    list-style-type: disc; /* hoặc circle/square tùy ý */
+}
+
+#datatable-listTours td li {
+    margin-bottom: 5px;
+}
+
+
+.tours_details-content ul {
+    list-style-type: disc !important;
+    padding-left: 20px !important;
+    margin-left: 15px !important;
+}
+
+.tours_details-content li {
+    margin-bottom: 5px;
+}
